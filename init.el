@@ -24,8 +24,15 @@
 (add-hook 'python-mode-hook 'eglot-ensure)
 (add-hook 'after-init-hook 'global-company-mode)
 
+(setq dashboard-projects-backend 'projectile)
+(setq dashboard-items '((recents   . 5)
+                        (bookmarks . 5)
+                        (projects  . 5)
+                        (agenda    . 5)
+                        (registers . 5)))
 (require 'dashboard)
 (dashboard-setup-startup-hook)
+
 
 (setq tab-bar-new-tab-choice "*dashboard*")
 (setq native-comp-async-report-warnings-errors 'silent)
