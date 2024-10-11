@@ -6,8 +6,7 @@
  '(custom-enabled-themes '(wombat))
  '(gdb-debuginfod-enable-setting t)
  '(ispell-dictionary nil)
- '(package-selected-packages '(helm-projectile projectile helm magit company dashboard))
- '(tab-bar-mode t)
+ '(package-selected-packages '(helm-projectile projectile helm company dashboard))
  '(package-vc-selected-packages
    '((clangd-inactive-regions :vc-backend Git :url "https://github.com/fargiolas/clangd-inactive-regions.el")))
  '(tool-bar-mode nil))
