@@ -6,7 +6,8 @@
  '(custom-enabled-themes '(wombat))
  '(gdb-debuginfod-enable-setting t)
  '(ispell-dictionary nil)
- '(package-selected-packages '(helm-projectile projectile helm company dashboard))
+ '(package-selected-packages
+   '(clangd-inactive-regions helm-projectile projectile helm company dashboard s friendly-shell-command))
  '(package-vc-selected-packages
    '((clangd-inactive-regions :vc-backend Git :url "https://github.com/fargiolas/clangd-inactive-regions.el")))
  '(tool-bar-mode nil))
@@ -54,8 +55,9 @@
 
 (speedbar 1)
 
-(add-to-list 'load-path "~/.emacs.d/stm32")
-(require 'stm32)
+(when (file-directory-p "~/.emacs.d/stm32")
+  (add-to-list 'load-path "~/.emacs.d/stm32")
+  (require 'stm32))
 
 (global-auto-revert-mode t)
 
