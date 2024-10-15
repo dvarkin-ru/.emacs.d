@@ -74,3 +74,14 @@
 
 (global-set-key (kbd "<C-tab>") 'previous-buffer)
 (global-set-key (kbd "<C-S-iso-lefttab>") 'next-buffer)
+
+(defun python-shell-run ()
+  (interactive)
+  (if (get-buffer-process "*Python*")
+      (python-shell-restart)
+    (run-python))
+  (sleep-for 0.1)
+  (python-shell-send-buffer t))
+
+(eval-after-load "python"
+  '(define-key python-mode-map (kbd "C-c C-c") 'python-shell-run))
