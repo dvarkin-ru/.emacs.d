@@ -5,20 +5,24 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(wombat))
  '(gdb-debuginfod-enable-setting t)
- '(ispell-dictionary nil)
+ '(global-tab-line-mode t)
+ '(ispell-dictionary "russian")
  '(package-selected-packages
-   '(clangd-inactive-regions helm-projectile projectile helm company dashboard s friendly-shell-command))
- '(package-vc-selected-packages
-   '((clangd-inactive-regions :vc-backend Git :url "https://github.com/fargiolas/clangd-inactive-regions.el")))
+   '(eglot-inactive-regions helm-projectile projectile helm company dashboard))
+ '(tab-line-close-tab-function 'kill-buffer)
+ '(tab-line-new-button-show nil)
+ '(tab-line-tab-name-function 'tab-line-tab-name-truncated-buffer)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(tab-bar ((t (:inherit variable-pitch :background "gray20"))))
- '(tab-bar-tab ((t (:inherit tab-bar :background "gray14"))))
- '(tab-bar-tab-inactive ((t (:inherit tab-bar-tab :background "gray20")))))
+ '(tab-line ((t (:height 0.9 :foreground "white" :background "grey20" :inherit variable-pitch))))
+ '(tab-line-highlight ((t (:background "grey85" :foreground "black" :box (:line-width (1 . 1) :style released-button)))))
+ '(tab-line-tab ((t (:inherit tab-line))))
+ '(tab-line-tab-current ((t (:inherit tab-line-tab :background "gray14"))))
+ '(tab-line-tab-inactive ((t (:inherit tab-line-tab :background "grey20")))))
 
 (require 'package)
 (add-to-list 'package-archives
@@ -36,14 +40,8 @@
                         (registers . 5)))
 (require 'dashboard)
 (dashboard-setup-startup-hook)
-(setq tab-bar-new-tab-choice "*dashboard*")
-(setq native-comp-async-report-warnings-errors 'silent)
 
-;; (defun close-tab-and-buffer()
-;;   (interactive)
-;;   (kill-buffer)
-;;   (tab-close))
-;; (keymap-global-set "C-x t w" 'close-tab-and-buffer)
+(setq native-comp-async-report-warnings-errors 'silent)
 
 (helm-mode 1)
 (global-set-key (kbd "M-x") #'helm-M-x)
@@ -61,16 +59,12 @@
 
 (global-auto-revert-mode t)
 
-(unless (package-installed-p 'clangd-inactive-regions)
-  (package-vc-install "https://github.com/fargiolas/clangd-inactive-regions.el"))
-
-(use-package clangd-inactive-regions
-  :init
-  (add-hook 'eglot-managed-mode-hook #'clangd-inactive-regions-mode)
+(use-package eglot-inactive-regions
+  :custom
+  (eglot-inactive-regions-style 'darken-foreground)
+  (eglot-inactive-regions-opacity 0.4)
   :config
-  (clangd-inactive-regions-set-method "darken-foreground")
-  (clangd-inactive-regions-set-opacity 0.55))
-(put 'dired-find-alternate-file 'disabled nil)
+  (eglot-inactive-regions-mode 1))
 
 (global-set-key (kbd "<C-tab>") 'previous-buffer)
 (global-set-key (kbd "<C-S-iso-lefttab>") 'next-buffer)
@@ -85,3 +79,25 @@
 
 (eval-after-load "python"
   '(define-key python-mode-map (kbd "C-c C-c") 'python-shell-run))
+
+(c-add-style "1tbs"
+             '("java"
+               (c-hanging-braces-alist
+		(defun-open after)
+		(class-open after)
+		(inline-open after)
+		(block-close . c-snug-do-while)
+		(statement-cont)
+		(substatement-open after)
+		(brace-list-open)
+		(brace-entry-open)
+		(extern-lang-open after)
+		(namespace-open after)
+		(module-open after)
+		(composition-open after)
+		(inexpr-class-open after)
+		(inexpr-class-close before)
+		(arglist-cont-nonempty))
+               (c-offsets-alist
+		(access-label . -))))
+(setq c-default-style "1tbs")
