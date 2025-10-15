@@ -4,11 +4,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(compile-command "make -j3 ")
  '(custom-enabled-themes '(wombat))
  '(gdb-debuginfod-enable-setting t)
  '(global-tab-line-mode t)
  '(ispell-dictionary "russian")
- '(mode-line-compact 'long)
  '(mode-line-percent-position nil)
  '(mode-line-position-column-line-format '("L%l C%c"))
  '(package-selected-packages
@@ -16,6 +16,7 @@
  '(tab-line-close-tab-function 'kill-buffer)
  '(tab-line-new-button-show nil)
  '(tab-line-tab-name-function 'tab-line-tab-name-truncated-buffer)
+ '(tab-width 4)
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -29,6 +30,7 @@
  '(tab-line-tab-inactive ((t (:inherit tab-line-tab :background "grey20")))))
 
 (require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
@@ -105,4 +107,4 @@
                (c-offsets-alist
 		(access-label . -))))
 (setq c-default-style "1tbs")
-
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
