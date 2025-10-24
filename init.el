@@ -6,13 +6,18 @@
  '(column-number-mode t)
  '(compile-command "make -j3 ")
  '(custom-enabled-themes '(wombat))
+ '(eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider))
+ '(fido-mode t)
+ '(fido-vertical-mode t)
  '(gdb-debuginfod-enable-setting t)
  '(global-tab-line-mode t)
  '(ispell-dictionary "russian")
  '(mode-line-percent-position nil)
  '(mode-line-position-column-line-format '("L%l C%c"))
  '(package-selected-packages
-   '(eglot-inactive-regions helm-projectile projectile helm company dashboard))
+   '(sr-speedbar eglot-inactive-regions projectile company dashboard))
+ '(sr-speedbar-default-width 20)
+ '(sr-speedbar-right-side nil)
  '(tab-line-close-tab-function 'kill-buffer)
  '(tab-line-new-button-show nil)
  '(tab-line-tab-name-function 'tab-line-tab-name-truncated-buffer)
@@ -31,8 +36,10 @@
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(setq package-archives
+      '(("melpa" . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/melpa/")
+        ("org"   . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/org/")
+        ("gnu"   . "https://raw.githubusercontent.com/d12frosted/elpa-mirror/master/gnu/")))
 
 (add-hook 'python-mode-hook 'eglot-ensure)
 (add-hook 'c-mode-hook 'eglot-ensure)
@@ -49,15 +56,8 @@
 
 (setq native-comp-async-report-warnings-errors 'silent)
 
-(helm-mode 1)
-(global-set-key (kbd "M-x") #'helm-M-x)
-(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-(global-set-key (kbd "C-x C-f") #'helm-find-files)
-
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
-(speedbar 1)
 
 (when (file-directory-p "~/.emacs.d/stm32")
   (add-to-list 'load-path "~/.emacs.d/stm32")
@@ -107,4 +107,14 @@
                (c-offsets-alist
 		(access-label . -))))
 (setq c-default-style "1tbs")
+
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
+
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
+(add-hook 'emacs-startup-hook
+		  (lambda ()
+			(sr-speedbar-open)
+			(ad-deactivate 'pop-to-buffer)
+			))
+
